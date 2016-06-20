@@ -114,7 +114,6 @@ public class RemoteSongSource {
                     @Override
                     public void onNext(Results results2) {
                         Log.i("Retrofit", "onNext");
-
                         results = results2;
                     }
                 }));
