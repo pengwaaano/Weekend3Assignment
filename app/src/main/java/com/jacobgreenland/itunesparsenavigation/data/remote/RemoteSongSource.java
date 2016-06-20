@@ -33,7 +33,7 @@ public class RemoteSongSource {
     public void getClassicSongs(ISongAPI _api, final boolean initialLoad, final ClassicContract.View mView, final SongRepository songRepository)
     {
         _subscriptions.add(_api.getClassicSongs()
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .timeout(5000, TimeUnit.MILLISECONDS)
                 .retry()
@@ -63,7 +63,7 @@ public class RemoteSongSource {
     public void getRockSongs(ISongAPI _api, final boolean initialLoad, final RockContract.View mView, final SongRepository songRepository)
     {
         _subscriptions.add(_api.getRockSongs()
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .timeout(5000, TimeUnit.MILLISECONDS)
                 .retry()
@@ -93,7 +93,7 @@ public class RemoteSongSource {
     public void getPopSongs(ISongAPI _api, final boolean initialLoad, final PopContract.View mView, final SongRepository songRepository)
     {
         _subscriptions.add(_api.getPopSongs()
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .timeout(5000, TimeUnit.MILLISECONDS)
                 .retry()
