@@ -1,11 +1,16 @@
 package com.jacobgreenland.itunesparsenavigation;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,6 +19,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.telecom.ConnectionService;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,6 +53,8 @@ public class MainActivity extends AppCompatActivity
     RealmConfiguration realmConfig;
     Realm realm;
 
+    public static boolean isOnline = true;
+
     @Inject
     public static ISongAPI _api;
 
@@ -55,9 +63,15 @@ public class MainActivity extends AppCompatActivity
     TextView detailsArtist;
     TextView detailsDescription;
 
+    BroadcastReceiver broadcastReceiver;
+
     public static SongRepository songRepository;
 
     public static Result chosenSong;
+
+    public static Snackbar admiral;
+
+    public static CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +83,8 @@ public class MainActivity extends AppCompatActivity
 
         MainFragment f = new MainFragment();
 
-
+        Intent intent = new Intent(this, ConnectionService.class);
+        startService(intent);
 
         songRepository = new SongRepository(getApplicationContext());
 
@@ -89,15 +104,17 @@ public class MainActivity extends AppCompatActivity
             PopFragment frag3 = new PopFragment();
             frag3.loadSongs();
         //}
-        //initialiseFloatingButton();
-    }
 
-    boolean isNetworkConnectionAvailable() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo info = cm.getActiveNetworkInfo();
-        if (info == null) return false;
-        NetworkInfo.State network = info.getState();
-        return (network == NetworkInfo.State.CONNECTED || network == NetworkInfo.State.CONNECTING);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.snackbarPosition);
+
+        Snackbar snackbar = Snackbar
+                .make(coordinatorLayout, "No Internet Connection", Snackbar.LENGTH_INDEFINITE);
+        snackbar.show();
+
+        installListener(snackbar);
+
+        //admiral.make(coordinatorLayout, "No Internet Connection",Snackbar.LENGTH_INDEFINITE);
+        //initialiseFloatingButton();
     }
     public void initialiseToolbar()
     {
@@ -235,5 +252,44 @@ public class MainActivity extends AppCompatActivity
         detailsName.setText(chosenSong.getTrackName());
         detailsArtist.setText(chosenSong.getArtistName());
         detailsDescription.setText("description");
+    }
+
+    private void installListener(final Snackbar snack) {
+
+        if (broadcastReceiver == null) {
+
+            broadcastReceiver = new BroadcastReceiver() {
+
+                @Override
+                public void onReceive(Context context, Intent intent) {
+
+                    Bundle extras = intent.getExtras();
+
+                    NetworkInfo info = (NetworkInfo) extras
+                            .getParcelable("networkInfo");
+
+                    NetworkInfo.State state = info.getState();
+                    //Log.d("InternalBroadcastReceiver", info.toString() + " " + state.toString());
+
+                    if (state == NetworkInfo.State.CONNECTED) {
+
+                        MainActivity.isOnline = true;
+                        snack.dismiss();
+                        Log.d("tag", "" + MainActivity.isOnline);
+
+                    } else {
+
+                        MainActivity.isOnline = false;
+                        snack.show();
+                        Log.d("tag", "" + MainActivity.isOnline);
+                    }
+
+                }
+            };
+
+            final IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+            registerReceiver(broadcastReceiver, intentFilter);
+        }
     }
 }
