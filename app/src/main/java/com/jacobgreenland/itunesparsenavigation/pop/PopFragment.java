@@ -79,6 +79,12 @@ public class PopFragment extends Fragment implements PopContract.View
         fPresenter.loadPopSongs(MainActivity._api, false);
     }
 
+    public void loadLocalSongs()
+    {
+        fPresenter = new PopPresenter(MainActivity.songRepository,this);
+        fPresenter.loadLocalPopSongs();
+    }
+
     @Override
     public void showUsers(String s) {
 

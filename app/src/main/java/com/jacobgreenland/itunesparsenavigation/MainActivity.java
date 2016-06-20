@@ -96,15 +96,6 @@ public class MainActivity extends AppCompatActivity
         ft.replace(R.id.mainFragment, f, "tabs");
         ft.commit();
 
-        //if() {
-            ClassicFragment frag = new ClassicFragment();
-            frag.loadSongs();
-            RockFragment frag2 = new RockFragment();
-            frag2.loadSongs();
-            PopFragment frag3 = new PopFragment();
-            frag3.loadSongs();
-        //}
-
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.snackbarPosition);
 
         Snackbar snackbar = Snackbar
@@ -113,6 +104,21 @@ public class MainActivity extends AppCompatActivity
 
         installListener(snackbar);
 
+        ClassicFragment frag = new ClassicFragment();
+        RockFragment frag2 = new RockFragment();
+        PopFragment frag3 = new PopFragment();
+
+        if(MainActivity.isOnline) {
+            frag.loadSongs();
+            frag2.loadSongs();
+            frag3.loadSongs();
+        }
+        else
+        {
+            frag.loadLocalSongs();
+            frag2.loadLocalSongs();
+            frag3.loadLocalSongs();
+        }
         //admiral.make(coordinatorLayout, "No Internet Connection",Snackbar.LENGTH_INDEFINITE);
         //initialiseFloatingButton();
     }
@@ -156,7 +162,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        if (drawer.isDrawerOpen(GravityCompat.START))
+        {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
@@ -181,7 +188,6 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

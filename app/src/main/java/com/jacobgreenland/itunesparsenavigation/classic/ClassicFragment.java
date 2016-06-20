@@ -72,6 +72,11 @@ public class ClassicFragment extends Fragment implements ClassicContract.View
         fPresenter = new ClassicPresenter(MainActivity.songRepository,this);
         fPresenter.loadClassicSongs(MainActivity._api, false);
     }
+    public void loadLocalSongs()
+    {
+        fPresenter = new ClassicPresenter(MainActivity.songRepository,this);
+        fPresenter.loadLocalClassicSongs();
+    }
 
     @Override
     public void showUsers(String s) {

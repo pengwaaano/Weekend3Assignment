@@ -16,6 +16,7 @@ import com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader;
 import com.jacobgreenland.itunesparsenavigation.MainActivity;
 import com.jacobgreenland.itunesparsenavigation.R;
 import com.jacobgreenland.itunesparsenavigation.adapter.ResultAdapter;
+import com.jacobgreenland.itunesparsenavigation.classic.ClassicPresenter;
 import com.jacobgreenland.itunesparsenavigation.model.Result;
 
 import java.util.List;
@@ -69,6 +70,11 @@ public class RockFragment extends Fragment implements RockContract.View{
     {
         fPresenter = new RockPresenter(MainActivity.songRepository,this);
         fPresenter.loadRockSongs(MainActivity._api, false);
+    }
+    public void loadLocalSongs()
+    {
+        fPresenter = new RockPresenter(MainActivity.songRepository,this);
+        fPresenter.loadLocalRockSongs();
     }
 
     @Override
