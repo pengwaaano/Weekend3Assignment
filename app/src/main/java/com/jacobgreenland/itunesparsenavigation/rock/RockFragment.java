@@ -60,9 +60,9 @@ public class RockFragment extends Fragment implements RockContract.View{
         rv.setItemAnimator(new DefaultItemAnimator());
 
         fPresenter = new RockPresenter(MainActivity.songRepository,this);
-        fPresenter.loadRockSongs(MainActivity._api, false);
-        header.attachTo(rv);
-        //fPresenter.loadLocalRockSongs();
+        //fPresenter.loadRockSongs(MainActivity._api, false);
+        //header.attachTo(rv);
+        fPresenter.loadLocalRockSongs();
     }
 
     public void loadSongs()

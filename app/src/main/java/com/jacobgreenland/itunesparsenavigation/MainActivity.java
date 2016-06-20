@@ -81,13 +81,14 @@ public class MainActivity extends AppCompatActivity
         ft.replace(R.id.mainFragment, f, "tabs");
         ft.commit();
 
-        ClassicFragment frag = new ClassicFragment();
-        frag.loadSongs();
-        RockFragment frag2 = new RockFragment();
-        frag2.loadSongs();
-        PopFragment frag3 = new PopFragment();
-        frag3.loadSongs();
-
+        //if() {
+            ClassicFragment frag = new ClassicFragment();
+            frag.loadSongs();
+            RockFragment frag2 = new RockFragment();
+            frag2.loadSongs();
+            PopFragment frag3 = new PopFragment();
+            frag3.loadSongs();
+        //}
         //initialiseFloatingButton();
     }
 

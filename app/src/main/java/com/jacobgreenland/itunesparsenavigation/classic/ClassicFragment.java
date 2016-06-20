@@ -60,11 +60,11 @@ public class ClassicFragment extends Fragment implements ClassicContract.View
         rv.setLayoutManager(new LinearLayoutManager(v.getContext()));
         rv.setItemAnimator(new DefaultItemAnimator());
 
-        header.attachTo(rv);
+        //header.attachTo(rv);
 
         fPresenter = new ClassicPresenter(MainActivity.songRepository,this);
-        fPresenter.loadClassicSongs(MainActivity._api, false);
-        //fPresenter.loadLocalClassicSongs();
+        //fPresenter.loadClassicSongs(MainActivity._api, false);
+        fPresenter.loadLocalClassicSongs();
     }
 
     public void loadSongs()
