@@ -46,10 +46,13 @@ public class RemoteSongSource {
                     @Override
                     public void onCompleted() {
                         Log.i("Retrofit", "onCompleted");
-                        if(initialLoad)
+                        if(initialLoad) {
                             songRepository.getLocalSource().addData(results.getResults(), "Classic");
-                        else
+                        }
+                        else {
                             mView.setAdapters(results.getResults(), true);
+                            mView.showDialog();
+                        }
 
                     }
                     @Override
@@ -76,10 +79,14 @@ public class RemoteSongSource {
                     @Override
                     public void onCompleted() {
                         Log.i("Retrofit", "onCompleted");
-                        if(initialLoad)
+                        if(initialLoad) {
                             songRepository.getLocalSource().addData(results.getResults(), "Rock");
-                        else
+                        }
+                        else {
+
                             mView.setAdapters(results.getResults(), true);
+                            mView.showDialog();
+                        }
 
                     }
                     @Override
@@ -106,10 +113,13 @@ public class RemoteSongSource {
                     @Override
                     public void onCompleted() {
                         Log.i("Retrofit", "onCompleted");
-                        if(initialLoad)
+                        if(initialLoad) {
                             songRepository.getLocalSource().addData(results.getResults(), "Pop");
-                        else
+                        }
+                        else {
                             mView.setAdapters(results.getResults(), true);
+                            mView.showDialog();
+                        }
                     }
                     @Override
                     public void onNext(Results results2) {

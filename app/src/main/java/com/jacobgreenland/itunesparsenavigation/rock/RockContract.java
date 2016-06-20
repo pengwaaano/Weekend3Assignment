@@ -18,6 +18,7 @@ public interface RockContract {
     interface View extends BaseView<RockContract.Presenter> {
         void showUsers(String s);
         void setAdapters(List<Result> results, boolean fromAPI);
+        void showDialog();
         Context getApplicationContext();
     }
 

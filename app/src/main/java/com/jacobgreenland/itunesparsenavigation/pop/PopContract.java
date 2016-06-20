@@ -18,6 +18,7 @@ public interface PopContract {
     interface View extends BaseView<Presenter> {
         void showUsers(String s);
         void setAdapters(List<Result> results, boolean fromAPI);
+        void showDialog();
         Context getApplicationContext();
     }
 

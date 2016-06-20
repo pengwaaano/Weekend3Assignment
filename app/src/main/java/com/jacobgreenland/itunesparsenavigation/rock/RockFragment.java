@@ -3,6 +3,7 @@ package com.jacobgreenland.itunesparsenavigation.rock;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -16,7 +17,6 @@ import com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader;
 import com.jacobgreenland.itunesparsenavigation.MainActivity;
 import com.jacobgreenland.itunesparsenavigation.R;
 import com.jacobgreenland.itunesparsenavigation.adapter.ResultAdapter;
-import com.jacobgreenland.itunesparsenavigation.classic.ClassicPresenter;
 import com.jacobgreenland.itunesparsenavigation.model.Result;
 
 import java.util.List;
@@ -52,8 +52,12 @@ public class RockFragment extends Fragment implements RockContract.View{
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                fPresenter.loadRockSongs(MainActivity._api, false);
-                mSwipeRefreshLayout.setRefreshing(false);
+                if(MainActivity.isOnline)
+                    fPresenter.loadRockSongs(MainActivity._api, false);
+                else {
+                    Snackbar.make(v.findViewById(R.id.snackbarPosition2), "No Internet Connection", Snackbar.LENGTH_SHORT).show();
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
             }
         });
 
@@ -75,6 +79,12 @@ public class RockFragment extends Fragment implements RockContract.View{
     {
         fPresenter = new RockPresenter(MainActivity.songRepository,this);
         fPresenter.loadLocalRockSongs();
+    }
+
+    @Override
+    public void showDialog()
+    {
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

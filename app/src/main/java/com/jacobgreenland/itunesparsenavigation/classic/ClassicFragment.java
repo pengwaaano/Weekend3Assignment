@@ -3,6 +3,7 @@ package com.jacobgreenland.itunesparsenavigation.classic;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -52,8 +53,12 @@ public class ClassicFragment extends Fragment implements ClassicContract.View
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                fPresenter.loadClassicSongs(MainActivity._api, false);
-                mSwipeRefreshLayout.setRefreshing(false);
+                if (MainActivity.isOnline)
+                    fPresenter.loadClassicSongs(MainActivity._api, false);
+                else {
+                    Snackbar.make(v.findViewById(R.id.snackbarPosition2), "No Internet Connection", Snackbar.LENGTH_SHORT).show();
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
             }
         });
 
@@ -76,6 +81,12 @@ public class ClassicFragment extends Fragment implements ClassicContract.View
     {
         fPresenter = new ClassicPresenter(MainActivity.songRepository,this);
         fPresenter.loadLocalClassicSongs();
+    }
+
+    @Override
+    public void showDialog()
+    {
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
